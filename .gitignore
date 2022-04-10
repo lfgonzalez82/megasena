@@ -1,0 +1,16 @@
+*.DotSettings.User
+*.onetoc2
+*.suo
+.vs
+PrecompiledWeb
+thumbs.db
+obj
+bin
+debug
+*.user
+*.vshost.*
+*.tss
+*.dbml.layout
+*.vscode
+*.db
+migrations
