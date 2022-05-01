@@ -24,13 +24,17 @@ public class ResultadosService : IResultadosService
         
     }
 
-    public async Task<List<Resultado>> RetornarResultados()
+    public async Task<List<Resultado>> RetornarResultados(int? pageNumber,int pageSize)
     {
         try{
-            return await _resultadoContext.Resultados.ToListAsync();
+
+            return await PaginatedList<Resultado>.CreateAsync(_resultadoContext.Resultados,pageNumber ?? 1, pageSize);
+            //return await _resultadoContext.Resultados.ToListAsync();
         }
-        catch(Exception ex) {
-            return null;
+        catch(Exception ex)
+        { 
+            Util.LogErro(ex);
+            throw;
         }
         
     }
@@ -40,10 +44,10 @@ public class ResultadosService : IResultadosService
         return await _resultadoContext.Resultados.Where(r => r.NumeroSorteio == _resultado.NumeroSorteio).SingleOrDefaultAsync();
     }
 
-    public async Task<int> CarregarDadosPlanilhaExcel(ImportExcel _importExcel) 
+    public async Task<bool> CarregarDadosPlanilhaExcel(ImportExcel _importExcel) 
     {
 
-        string path = @"E:\Upload";
+        string path = Path.GetTempPath();
         
         if (!_excelService.VerificarExistenciaDiretorio(path)){
             _excelService.CriarDiretorio(path);
@@ -52,11 +56,27 @@ public class ResultadosService : IResultadosService
         _excelService.EscreverArquivoDiretorio(path, _importExcel);
 
         
-        var listaResultados =  _excelService.PegarDadosExcel(Path.Combine(path, _importExcel.file.FileName));
+        var listaResultadosCadastrados = _resultadoContext.Resultados.ToList();
+        var listaResultadosExcel =  _excelService.PegarDadosExcel(Path.Combine(path, _importExcel.file.FileName));
+
+        var listaCadastrar = new List<Resultado>();
+        foreach (var itemListaExcel in listaResultadosExcel) {
+            
+            if (listaResultadosCadastrados.Where(lrc => lrc.NumeroSorteio == itemListaExcel.NumeroSorteio).Count() == 0)
+            {
+                listaCadastrar.Add(itemListaExcel);
+            }
+
+        }
+
         
-        _resultadoContext.Resultados.AddRange(listaResultados);
-        return await _resultadoContext.SaveChangesAsync();
+        await _resultadoContext.AddRangeAsync(listaCadastrar);
+        await _resultadoContext.SaveChangesAsync();
+
+
         
+        _excelService.ApagarArquivoDiretorio(Path.Combine(path,_importExcel.file.FileName));
+        return true;
         
 
     }

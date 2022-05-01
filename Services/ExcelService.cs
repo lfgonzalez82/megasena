@@ -35,6 +35,17 @@ public class ExcelService : IExcelService
         
     }
 
+    public void ApagarArquivoDiretorio(string _caminho) {
+        try{
+            File.Delete(_caminho);
+        }
+        catch(Exception ex) {
+            Util.LogErro(ex);
+            throw ex;
+        }
+        
+    }
+
     public MemoryStream EscreverArquivoMemoria(ImportExcel _arquivo)
     {
         var memoryStream = new MemoryStream();
@@ -69,6 +80,7 @@ public class ExcelService : IExcelService
         
         ad.SelectCommand = cmd;
         ad.Fill(dt);
+        excelConnection.Close();
 
         return Util.DataTableToList<Resultado>(dt);
 

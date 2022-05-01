@@ -1,4 +1,4 @@
-@model List<Resultado>
+@model PaginatedList<Resultado>
 <a asp-action="CarregarDadosPlanilha" class="btn btn-primary">Carregar Resultados em Excel</a>&nbsp;&nbsp;
 <a asp-action="Inserir" class="btn btn-primary fas fa-plus">Novo Resultado</a>
 <br />
@@ -58,5 +58,56 @@
     </tbody>
 
 </table>
+
+Page @(Model.TotalPages < Model.PageIndex ? 0 : Model.PageIndex) of @Model.TotalPages
+<br /><br/>
+
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="1"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    First
+</a>
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+@for(var i = Model.PageIndex; i <= Model.PageIndex + 15 && i <= Model.TotalPages; i++){
+
+    <a asp-action="Index"
+     asp-route-sortOrder="@ViewData["CurrentSort"]"
+    asp-route-pageNumber="@(i)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+    class="btn btn-default @nextDisabled">
+    @i
+    </a>
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.TotalPages)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Last
+</a>
+<br /><br/>
+
 
 

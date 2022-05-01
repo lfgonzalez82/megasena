@@ -1,26 +1,24 @@
 
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 public class ResultadosController : Controller
 {
-    private readonly IHostingEnvironment _environment;
     private readonly IExcelService _excelService;
     private readonly IResultadosService _resultadoService;
-
-    public ResultadosController(IHostingEnvironment environment,IExcelService excelService, IResultadosService resultadosService)
+    public ResultadosController(IExcelService excelService, IResultadosService resultadosService)
     {
-        _environment = environment;
         _excelService = excelService;
         _resultadoService = resultadosService;
     }
 
 
-    public IActionResult Index()
+    public IActionResult Index(int? pageNumber)
     {
-        return View(_resultadoService.RetornarResultados().Result);
+        int pageSize = 20;
+        return View(_resultadoService.RetornarResultados(pageNumber, pageSize).Result);
+        
+        
     }
 
     public IActionResult Inserir()
