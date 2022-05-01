@@ -1,0 +1,74 @@
+@model Resultado
+
+@Html.AntiForgeryToken()
+
+<form asp-action="InserirResultados">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="NumeroSorteio" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NumeroSorteio" class="form-control"  />
+                <span asp-validation-for="NumeroSorteio"  class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Dezena1" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena1" class="form-control" />
+                <span asp-validation-for="Dezena1" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="Dezena2" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena2" class="form-control" />
+                <span asp-validation-for="Dezena2" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dezena3" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena3" class="form-control" />
+                <span asp-validation-for="Dezena3" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dezena4" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena4" class="form-control" />
+                <span asp-validation-for="Dezena4" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dezena5" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena5" class="form-control" />
+                <span asp-validation-for="Dezena5" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Dezena6" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Dezena6" class="form-control" />
+                <span asp-validation-for="Dezena6" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Inserir" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Retornar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

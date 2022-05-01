@@ -1,0 +1,62 @@
+@model List<Resultado>
+<a asp-action="CarregarDadosPlanilha" class="btn btn-primary">Carregar Resultados em Excel</a>&nbsp;&nbsp;
+<a asp-action="Inserir" class="btn btn-primary fas fa-plus">Novo Resultado</a>
+<br />
+<br />
+
+
+
+
+<table id="myDataTable" class="table table-striped table-bordered nowrap" style="width:100%">
+    <thead>
+        <tr>
+            <th>Numero Sorteio</th>
+            <th>Data Sorteio</th>
+            <th>Dezena 1</th>
+            <th>Dezena 2</th>
+            <th>Dezena 3</th>
+            <th>Dezena 4</th>
+            <th>Dezena 5</th>
+            <th>Dezena 6</th>
+        </tr>
+    </thead>
+
+
+    <tbody id="bodyDados">
+        @if(Model != null) {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroSorteio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+
+                    @Html.DisplayFor(modelItem => item.Dezena1)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Dezena2)</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dezena3)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dezena4)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dezena5)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dezena6)
+                </td>
+                
+            </tr>
+        }
+        }
+        
+    </tbody>
+
+</table>
+
+

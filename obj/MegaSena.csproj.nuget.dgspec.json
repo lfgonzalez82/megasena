@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projetos\\c#\\MegaSena\\MegaSena.csproj": {}
+    "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj": {}
   },
   "projects": {
-    "E:\\Projetos\\c#\\MegaSena\\MegaSena.csproj": {
+    "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projetos\\c#\\MegaSena\\MegaSena.csproj",
+        "projectUniqueName": "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
         "projectName": "MegaSena",
-        "projectPath": "E:\\Projetos\\c#\\MegaSena\\MegaSena.csproj",
+        "projectPath": "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
         "packagesPath": "C:\\Users\\luizf\\.nuget\\packages\\",
-        "outputPath": "E:\\Projetos\\c#\\MegaSena\\obj\\",
+        "outputPath": "E:\\Projetos\\C#\\MegaSena\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
           "C:\\Users\\luizf\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -43,6 +39,28 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite.Core": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "System.Data.OleDb": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -61,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.104\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,0 +1,17 @@
+@model ImportExcel
+<h2>Upload de Arquivos</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="well">
+        <table class="table table-striped">
+            <tr>
+                <td>Arquivo : </td>
+                <td><input asp-for="file" class="form-control"/></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" name="submit" value="Enviar Arquivo" /></td>
+            </tr>            
+        </table>
+    </div>
+}
