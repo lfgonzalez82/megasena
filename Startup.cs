@@ -28,8 +28,9 @@ namespace MegaSena
             services.AddDbContext<ResultadoContext>(options =>
                 options.UseSqlite(connection)
             );
-            services.AddSingleton<IExcelService,ExcelService>();
+            services.AddTransient<IExcelService,ExcelService>();
             services.AddTransient<IResultadosService,ResultadosService>();
+            services.AddTransient<IDezenaSorteioService,DezenaSorteioService>();
 
             services.AddControllersWithViews();
         }

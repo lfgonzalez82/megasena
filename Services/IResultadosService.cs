@@ -7,6 +7,8 @@ public interface IResultadosService {
 
     Task<int> InserirResultado(Resultado _resultado);
 
+    
+
     Task<List<Resultado>> RetornarResultados(int? pageNumber, int pageSize);
 
     Task<Resultado> ValidarExistenciaResultado(Resultado _resultado);

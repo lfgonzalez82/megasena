@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore;
 public class ResultadosService : IResultadosService
 {
     private readonly IExcelService _excelService;
+    private readonly IDezenaSorteioService _dezenaSorteioService;
     private readonly ResultadoContext _resultadoContext;
 
-    public ResultadosService(IExcelService excelService, ResultadoContext resultadoContext)
+    public ResultadosService(IExcelService excelService,
+                             IDezenaSorteioService dezenaSorteioService,
+                             ResultadoContext resultadoContext)
     {
         _excelService = excelService;
+        _dezenaSorteioService = dezenaSorteioService;
         _resultadoContext = resultadoContext;
 
     }
@@ -20,23 +24,39 @@ public class ResultadosService : IResultadosService
     public async Task<int> InserirResultado(Resultado _resultado)
     {
         _resultadoContext.Resultados.Add(_resultado);
-        return await _resultadoContext.SaveChangesAsync();
-        
+        await _resultadoContext.SaveChangesAsync();
+
+        var listaDezenaSorteio = new List<DezenaSorteio>();
+        var itemDezenaSorteio = await _dezenaSorteioService.VerificaSorteioCadastrado(_resultado.NumeroSorteio);
+        if (itemDezenaSorteio == null)
+        {
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena1 });
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena2 });
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena3 });
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena4 });
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena5 });
+            listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = _resultado.NumeroSorteio, Dezena = _resultado.Dezena6 });
+        }
+        await _dezenaSorteioService.InserirDezenasPorSorteio(listaDezenaSorteio);
+
+        return 1;
+
     }
 
-    public async Task<List<Resultado>> RetornarResultados(int? pageNumber,int pageSize)
+    public async Task<List<Resultado>> RetornarResultados(int? pageNumber, int pageSize)
     {
-        try{
+        try
+        {
 
-            return await PaginatedList<Resultado>.CreateAsync(_resultadoContext.Resultados,pageNumber ?? 1, pageSize);
+            return await PaginatedList<Resultado>.CreateAsync(_resultadoContext.Resultados, pageNumber ?? 1, pageSize);
             //return await _resultadoContext.Resultados.ToListAsync();
         }
-        catch(Exception ex)
-        { 
+        catch (Exception ex)
+        {
             Util.LogErro(ex);
             throw;
         }
-        
+
     }
 
     public async Task<Resultado> ValidarExistenciaResultado(Resultado _resultado)
@@ -44,42 +64,58 @@ public class ResultadosService : IResultadosService
         return await _resultadoContext.Resultados.Where(r => r.NumeroSorteio == _resultado.NumeroSorteio).SingleOrDefaultAsync();
     }
 
-    public async Task<bool> CarregarDadosPlanilhaExcel(ImportExcel _importExcel) 
+    public async Task<bool> CarregarDadosPlanilhaExcel(ImportExcel _importExcel)
     {
 
         string path = Path.GetTempPath();
-        
-        if (!_excelService.VerificarExistenciaDiretorio(path)){
+
+        if (!_excelService.VerificarExistenciaDiretorio(path))
+        {
             _excelService.CriarDiretorio(path);
         }
 
         _excelService.EscreverArquivoDiretorio(path, _importExcel);
 
-        
+
         var listaResultadosCadastrados = _resultadoContext.Resultados.ToList();
-        var listaResultadosExcel =  _excelService.PegarDadosExcel(Path.Combine(path, _importExcel.file.FileName));
+        var listaResultadosExcel = _excelService.PegarDadosExcel(Path.Combine(path, _importExcel.file.FileName));
 
         var listaCadastrar = new List<Resultado>();
-        foreach (var itemListaExcel in listaResultadosExcel) {
-            
+        var listaDezenaSorteio = new List<DezenaSorteio>();
+        foreach (var itemListaExcel in listaResultadosExcel)
+        {
+
             if (listaResultadosCadastrados.Where(lrc => lrc.NumeroSorteio == itemListaExcel.NumeroSorteio).Count() == 0)
             {
+                var itemDezenaSorteio = await _dezenaSorteioService.VerificaSorteioCadastrado(itemListaExcel.NumeroSorteio);
+                if (itemDezenaSorteio == null)
+                {
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena1 });
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena2 });
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena3 });
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena4 });
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena5 });
+                    listaDezenaSorteio.Add(new DezenaSorteio { NumeroSorteio = itemListaExcel.NumeroSorteio, Dezena = itemListaExcel.Dezena6 });
+                }
                 listaCadastrar.Add(itemListaExcel);
             }
 
         }
 
-        
-        await _resultadoContext.AddRangeAsync(listaCadastrar);
+
+        await _resultadoContext.Resultados.AddRangeAsync(listaCadastrar);
         await _resultadoContext.SaveChangesAsync();
 
+        await _dezenaSorteioService.InserirDezenasPorSorteio(listaDezenaSorteio);
 
-        
-        _excelService.ApagarArquivoDiretorio(Path.Combine(path,_importExcel.file.FileName));
+
+
+
+        _excelService.ApagarArquivoDiretorio(Path.Combine(path, _importExcel.file.FileName));
         return true;
-        
+
 
     }
 
-
+    
 }

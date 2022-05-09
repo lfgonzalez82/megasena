@@ -18,7 +18,7 @@ public static class Util
             if (dt.Rows.Count > 0)
             {
 
-                foreach (DataRow? it in dt.Rows)
+                foreach (DataRow it in dt.Rows)
                 {
                     if (it == null)
                     {
@@ -100,7 +100,7 @@ public static class Util
             var obj = Activator.CreateInstance<T>();
             if (dt.Rows.Count > 0)
             {
-                foreach (DataRow? it in dt.Rows)
+                foreach (DataRow it in dt.Rows)
                 {
                     if (it == null)
                     {

@@ -1,6 +1,8 @@
 *.DotSettings.User
 *.onetoc2
 *.suo
+*.xlsx
+*.xls
 .vs
 PrecompiledWeb
 thumbs.db

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
+using ClosedXML.Excel;
 
 public class ExcelService : IExcelService
 {
@@ -86,4 +87,31 @@ public class ExcelService : IExcelService
 
 
     }
+
+    public IXLWorkbook CriarWorkbook(string _nome)
+    {
+        return new XLWorkbook();
+    }
+
+    public IXLWorksheet CriarWoorksheet(IXLWorkbook _workbook, string _nome)
+    {
+        
+        return _workbook.Worksheets.Add(_nome);
+    }
+
+    public void PreencherTextoPlanilha(IXLWorksheet _planilha, int _linhaCelula, int _colunaCelula, string _valorCelula)
+    {
+        _planilha.Cell(_linhaCelula, _colunaCelula).Value = _valorCelula;
+    }
+
+    public void SalvarArquivo(IXLWorkbook _workbook) {
+        
+        _workbook.SaveAs("DezenasPorSorteio.xlsx");
+        
+        
+    }
+
+    
+
+    
 }

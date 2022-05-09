@@ -14442,6 +14442,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Resultados\\PegarDezenasSorteio.cshtml",
+      "TargetPath": "Views\\Resultados\\PegarDezenasSorteio.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Resultados\\Inserir.cshtml",
       "TargetPath": "Views\\Resultados\\Inserir.cshtml",
       "FileKind": "mvc"
@@ -14449,6 +14454,11 @@
     {
       "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Resultados\\CarregarDadosPlanilha.cshtml",
       "TargetPath": "Views\\Resultados\\CarregarDadosPlanilha.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Resultados\\ListaDezenasAgrupadas.cshtml",
+      "TargetPath": "Views\\Resultados\\ListaDezenasAgrupadas.cshtml",
       "FileKind": "mvc"
     }
   ],

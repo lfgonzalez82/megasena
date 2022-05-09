@@ -6,10 +6,15 @@ public class ResultadosController : Controller
 {
     private readonly IExcelService _excelService;
     private readonly IResultadosService _resultadoService;
-    public ResultadosController(IExcelService excelService, IResultadosService resultadosService)
+    private readonly IDezenaSorteioService _dezenaSorteioService;
+
+    public ResultadosController(IExcelService excelService, 
+                                IResultadosService resultadosService,
+                                IDezenaSorteioService dezenaSorteioService)
     {
         _excelService = excelService;
         _resultadoService = resultadosService;
+        _dezenaSorteioService = dezenaSorteioService;
     }
 
 
@@ -56,5 +61,24 @@ public class ResultadosController : Controller
         ViewBag.Result = "Successfully Imported";
         return RedirectToAction("Index");
     }
+
+    public IActionResult GerarDezenasPorSorteio() 
+    {
+        _dezenaSorteioService.GerarDezenasPorSorteio();
+        return RedirectToAction("Index");
+    }
+
+    public IActionResult ListaDezenasAgrupadas()
+    {
+        return View(_dezenaSorteioService.ListarDezenasAgrupadas().Result);
+    }
+
+    public IActionResult GerarResultadoExcel() 
+    {
+        _dezenaSorteioService.GerarResultadoExcel();
+        return RedirectToAction("ListarDezenasAgrupadas");
+    }
+
+    
 
 }

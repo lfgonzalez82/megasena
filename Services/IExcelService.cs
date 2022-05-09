@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using ClosedXML.Excel;
 
 public interface IExcelService 
 {
@@ -15,6 +13,14 @@ public interface IExcelService
     MemoryStream EscreverArquivoMemoria(ImportExcel _arquivo);
 
     List<Resultado> PegarDadosExcel(string _caminho);
+
+    IXLWorkbook CriarWorkbook(string _nome);
+
+    IXLWorksheet CriarWoorksheet(IXLWorkbook _workbook, string _nome);
+
+    void PreencherTextoPlanilha(IXLWorksheet _planilha, int _linhaCelula, int _colunaCelula , string _valorCelula);
+
+    void SalvarArquivo(IXLWorkbook _workbook);
 
 
 
