@@ -6343,11 +6343,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
+      "projectUniqueName": "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
       "projectName": "MegaSena",
-      "projectPath": "e:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
+      "projectPath": "E:\\Projetos\\C#\\MegaSena\\MegaSena.csproj",
       "packagesPath": "C:\\Users\\luizf\\.nuget\\packages\\",
-      "outputPath": "e:\\Projetos\\C#\\MegaSena\\obj\\",
+      "outputPath": "E:\\Projetos\\C#\\MegaSena\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\luizf\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6419,7 +6419,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.104\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.105\\RuntimeIdentifierGraph.json"
       }
     }
   }

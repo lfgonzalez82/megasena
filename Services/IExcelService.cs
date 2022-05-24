@@ -20,7 +20,7 @@ public interface IExcelService
 
     void PreencherTextoPlanilha(IXLWorksheet _planilha, int _linhaCelula, int _colunaCelula , string _valorCelula);
 
-    void SalvarArquivo(IXLWorkbook _workbook);
+    void SalvarArquivo(IXLWorkbook _workbook, string _nomeArquivo);
 
 
 

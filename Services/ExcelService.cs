@@ -104,9 +104,9 @@ public class ExcelService : IExcelService
         _planilha.Cell(_linhaCelula, _colunaCelula).Value = _valorCelula;
     }
 
-    public void SalvarArquivo(IXLWorkbook _workbook) {
+    public void SalvarArquivo(IXLWorkbook _workbook, string _nomeArquivo) {
         
-        _workbook.SaveAs("DezenasPorSorteio.xlsx");
+        _workbook.SaveAs(_nomeArquivo + ".xlsx");
         
         
     }

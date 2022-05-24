@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 public class DezenaSorteioService : IDezenaSorteioService
 {
@@ -124,7 +125,7 @@ public class DezenaSorteioService : IDezenaSorteioService
         return listaDezenaSorteio;
     }
 
-    public async Task GerarResultadoExcel()
+    public async Task GerarListaSorteioExcel()
     {
         try
         {
@@ -153,7 +154,60 @@ public class DezenaSorteioService : IDezenaSorteioService
                 }
             
             }
-            _excelService.SalvarArquivo(workBook);
+            _excelService.SalvarArquivo(workBook, "DezenasPorSorteio");
+        }
+        catch(Exception ex)
+        {
+            Util.LogErro(ex);
+            throw(ex);
+        }
+
+
+
+
+
+    }
+
+    public async Task GerarListaDezenaPareadaExcel()
+    {
+        try
+        {
+            var listaAgrupada = await ListarDezenasPareadasAgrupadas();
+
+            var workBook = _excelService.CriarWorkbook("MegaSena");
+            foreach (var item in listaAgrupada)
+            {
+                var linhaPlanilha = 1;
+                var difSorteio = 0;
+                var sorteioAnterior = 0;
+                var dezenaAnterior = 0;
+                var planilha = _excelService.CriarWoorksheet(workBook, item.Key.ToString());
+                _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 1, "Dezena Pareada");
+                _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 2, "Numero Sorteio");
+                _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 3, "Dif. Sorteio Anterior");
+
+
+                foreach (var itemInterno in item)
+                {
+                    linhaPlanilha++;
+                    _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 1, itemInterno.DezenaConjunta.ToString());
+                    _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 2, itemInterno.NumeroSorteio.ToString());
+                    
+                    if(dezenaAnterior == itemInterno.DezenaConjunta || dezenaAnterior == 0)
+                    {
+                        difSorteio = itemInterno.NumeroSorteio - sorteioAnterior;
+                    }
+                    else {
+                        difSorteio = itemInterno.NumeroSorteio;
+                    }
+                    
+                    dezenaAnterior = itemInterno.DezenaConjunta;
+                    sorteioAnterior = itemInterno.NumeroSorteio;
+                    _excelService.PreencherTextoPlanilha(planilha, linhaPlanilha, 3, difSorteio.ToString());
+                }
+            
+            }
+            _excelService.SalvarArquivo(workBook, "DezenasPareadasPorSorteio");
         }
         catch(Exception ex)
         {
@@ -193,9 +247,40 @@ public class DezenaSorteioService : IDezenaSorteioService
         return dezenaGrupo.ToList();
     }
 
+    public async Task<List<IGrouping<int, DezenaPareada>>> ListarDezenasPareadasAgrupadas()
+    {
+        List<DezenaPareada> listaDezenaPareada = await PegarDezenasPareadasPorSorteio();
+        listaDezenaPareada.OrderBy(ldp => ldp.DezenaConjunta).ThenBy(ldp => ldp.NumeroSorteio);
+        var dezenaGrupo = from dezena in listaDezenaPareada
+                          group dezena by dezena.DezenaProcurada into grupoDezena
+                          select grupoDezena
+                          ;
+        return dezenaGrupo.ToList();
+    }
+
     public async Task<List<DezenaSorteio>> PegarDezenasPorSorteio()
     {
         return await _resultadoContext.DezenasSorteio.OrderBy(r => r.Dezena).ThenBy(r => r.NumeroSorteio).ToListAsync();
+    }
+
+    public async Task<List<DezenaPareada>> PegarDezenasPareadasPorSorteio()
+    {
+        var retorno = _resultadoContext.DezenasSorteio.ToList();
+
+        var query = from dezenaSorteio in retorno
+                    from dezenaPareada in retorno 
+                    where dezenaPareada.NumeroSorteio == dezenaSorteio.NumeroSorteio && dezenaPareada.Dezena != dezenaSorteio.Dezena
+                    orderby dezenaSorteio.Dezena,dezenaPareada.Dezena, dezenaPareada.NumeroSorteio
+                    select new DezenaPareada{
+                        DezenaConjunta = dezenaPareada.Dezena,
+                        DezenaProcurada = dezenaSorteio.Dezena,
+                        NumeroSorteio = dezenaPareada.NumeroSorteio
+                    }
+                    ;
+        
+        return query.ToList();
+
+        
     }
 
     public async Task<DezenaSorteio> VerificaSorteioCadastrado(int _numeroSorteio)

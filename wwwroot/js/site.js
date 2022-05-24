@@ -16,11 +16,12 @@ function abrirDezenas(id) {
     }
  }
 
- function gerarExcel() {
+ function gerarExcel(tipoLista) {
 
     $.ajax({
         type: "POST",
         url: "/Resultados/GerarResultadoExcel",
+        data: { tipoLista: tipoLista },
         success: function (retorno) {
 
 

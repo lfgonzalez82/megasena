@@ -14437,6 +14437,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Resultados\\ListaDezenasPareadasAgrupadas.cshtml",
+      "TargetPath": "Views\\Resultados\\ListaDezenasPareadasAgrupadas.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "e:\\Projetos\\C#\\MegaSena\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"

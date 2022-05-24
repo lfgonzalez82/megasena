@@ -8,13 +8,19 @@ public interface IDezenaSorteioService{
     Task<bool> GerarDezenasPorSorteio();
     Task<List<DezenaSorteio>> PegarDezenasPorSorteio();
 
+    Task<List<DezenaPareada>> PegarDezenasPareadasPorSorteio();
+
     Task<int> InserirDezenasPorSorteio(List<DezenaSorteio> _listaDezenaSorteio);
 
     List<DezenaSorteio> GerarListaDezenaSorteio(List<int> _listaResultado, int _dezenaProcurada);
 
     Task<List<IGrouping<int,DezenaSorteio>>> ListarDezenasAgrupadas();
 
-    Task GerarResultadoExcel();
+    Task<List<IGrouping<int, DezenaPareada>>> ListarDezenasPareadasAgrupadas();
+
+    Task GerarListaSorteioExcel();
+
+    Task GerarListaDezenaPareadaExcel();
 
     Task<DezenaSorteio> VerificaSorteioCadastrado(int _numeroSorteio);
 

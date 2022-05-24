@@ -73,10 +73,27 @@ public class ResultadosController : Controller
         return View(_dezenaSorteioService.ListarDezenasAgrupadas().Result);
     }
 
-    public IActionResult GerarResultadoExcel() 
+    public IActionResult ListaDezenasPareadasAgrupadas()
     {
-        _dezenaSorteioService.GerarResultadoExcel();
-        return RedirectToAction("ListarDezenasAgrupadas");
+        return View(_dezenaSorteioService.ListarDezenasPareadasAgrupadas().Result);
+    }
+
+    public IActionResult GerarResultadoExcel(string tipoLista) 
+    {
+        
+        var acao = "";
+            
+        if(tipoLista == "DezenaSorteio"){
+            _dezenaSorteioService.GerarListaSorteioExcel();
+            acao = "ListarDezenasAgrupadas";
+        }
+        else if(tipoLista == "DezenaPareada") {
+            _dezenaSorteioService.GerarListaDezenaPareadaExcel();
+            acao = "ListarDezenasPareadasAgrupadas";
+        }
+
+        return RedirectToAction(acao);
+        
     }
 
     
